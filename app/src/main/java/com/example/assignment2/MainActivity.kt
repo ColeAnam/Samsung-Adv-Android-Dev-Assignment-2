@@ -26,7 +26,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
+import com.example.assignment2.datastore.MyContacts
+import com.example.assignment2.datastore.StoreContacts
 import com.example.assignment2.ui.theme.Assignment2Theme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.future.future
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,10 +59,16 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen() {
 
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val dataStore = StoreContacts(context)
+
+//    val savedNameState = dataStore.getName.collectAsState(initial = "")
+//    val savedNumState = dataStore.getNum.collectAsState(initial = "")
+
     var cName by remember { mutableStateOf("") }
     var cNo by remember { mutableStateOf("") }
-
-    val contactList = listOf("text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text")
+    var contactList by remember { mutableStateOf(listOf("")) }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(top = 100.dp)) {
@@ -74,7 +91,18 @@ fun MainScreen() {
         }
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 20.dp)) {
             Button(onClick = {
-
+                scope.future {
+                    contactList = listOf("")
+                    dataStore.getAllContacts()
+                        .flowOn(Dispatchers.IO)
+                        .collect {dataList ->
+                            dataList.forEach { data ->
+                                val dataName = data.name
+                                val dataNum = data.num
+                                contactList = contactList + listOf("$dataName $dataNum")
+                            }
+                        }
+                }
             },
                 modifier = Modifier
                     .width(150.dp)
@@ -83,7 +111,12 @@ fun MainScreen() {
                 Text("Load")
             }
             Button(onClick = {
-
+                scope.launch {
+                    contactList = listOf("")
+                    if (cName != "" && cNo != "") {
+                        dataStore.saveInfo(MyContacts(cName, cNo))
+                    }
+                }
             },
                 modifier = Modifier
                     .width(150.dp)
@@ -100,7 +133,9 @@ fun MainScreen() {
 
 @Composable
 fun ScrollableTextList(textList: List<String>) {
-    LazyColumn(modifier = Modifier.padding(top = 20.dp).height(200.dp)) {
+    LazyColumn(modifier = Modifier
+        .padding(top = 20.dp)
+        .height(200.dp)) {
         items(textList) {text ->
             Text(text)
         }
