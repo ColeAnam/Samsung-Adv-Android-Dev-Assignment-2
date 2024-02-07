@@ -6,7 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
@@ -23,6 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import com.example.assignment2.ui.theme.Assignment2Theme
 
 class MainActivity : ComponentActivity() {
@@ -48,6 +51,8 @@ fun MainScreen() {
     var cName by remember { mutableStateOf("") }
     var cNo by remember { mutableStateOf("") }
 
+    val contactList = listOf("text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text")
+
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(top = 100.dp)) {
             TextField(
@@ -64,27 +69,43 @@ fun MainScreen() {
                 label = {
                     Text("Contact No")
                 },
-                modifier = Modifier.padding(bottom = 20.dp)
+                modifier = Modifier.padding(bottom = 10.dp)
             )
         }
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 20.dp)) {
             Button(onClick = {
 
             },
-                modifier = Modifier.width(150.dp).padding(10.dp)
+                modifier = Modifier
+                    .width(150.dp)
+                    .padding(10.dp)
                 ) {
                 Text("Load")
             }
             Button(onClick = {
 
             },
-                modifier = Modifier.width(150.dp).padding(10.dp)
+                modifier = Modifier
+                    .width(150.dp)
+                    .padding(10.dp)
             ) {
                 Text("Save")
             }
         }
+        Text("Contacts", modifier = Modifier.offset(x = -100.dp))
+        ScrollableTextList(contactList)
     }
 }
+
+@Composable
+fun ScrollableTextList(textList: List<String>) {
+    LazyColumn(modifier = Modifier.padding(top = 20.dp).height(200.dp)) {
+        items(textList) {text ->
+            Text(text)
+        }
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
