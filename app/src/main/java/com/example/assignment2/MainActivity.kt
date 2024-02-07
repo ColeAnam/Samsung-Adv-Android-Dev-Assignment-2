@@ -4,9 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -46,7 +49,7 @@ fun MainScreen() {
     var cNo by remember { mutableStateOf("") }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(100.dp)) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(top = 100.dp)) {
             TextField(
                 value = cName,
                 onValueChange = { cName = it },
@@ -63,6 +66,22 @@ fun MainScreen() {
                 },
                 modifier = Modifier.padding(bottom = 20.dp)
             )
+        }
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 20.dp)) {
+            Button(onClick = {
+
+            },
+                modifier = Modifier.width(150.dp).padding(10.dp)
+                ) {
+                Text("Load")
+            }
+            Button(onClick = {
+
+            },
+                modifier = Modifier.width(150.dp).padding(10.dp)
+            ) {
+                Text("Save")
+            }
         }
     }
 }
