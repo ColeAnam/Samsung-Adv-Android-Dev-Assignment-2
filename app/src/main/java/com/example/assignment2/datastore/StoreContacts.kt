@@ -19,16 +19,6 @@ class StoreContacts(private val context: Context) {
         val CONTACT_KEY = stringPreferencesKey("data")
     }
 
-//    val getName: Flow<String?> = context.dataStore.data
-//        .map { preferences ->
-//            preferences[CONTACT_NAME_KEY] ?: ""
-//        }
-//
-//    val getNum: Flow<String?> = context.dataStore.data
-//        .map { preferences ->
-//            preferences[CONTACT_NUM_KEY] ?: ""
-//        }
-
     fun getAllContacts(): Flow<List<MyContacts>> {
         return context.dataStore.data.map { preferences ->
             val savedData = preferences[CONTACT_KEY]

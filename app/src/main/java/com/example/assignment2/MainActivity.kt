@@ -63,9 +63,6 @@ fun MainScreen() {
     val scope = rememberCoroutineScope()
     val dataStore = StoreContacts(context)
 
-//    val savedNameState = dataStore.getName.collectAsState(initial = "")
-//    val savedNumState = dataStore.getNum.collectAsState(initial = "")
-
     var cName by remember { mutableStateOf("") }
     var cNo by remember { mutableStateOf("") }
     var contactList by remember { mutableStateOf(listOf("")) }
