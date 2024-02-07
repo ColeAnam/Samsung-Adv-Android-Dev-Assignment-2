@@ -94,6 +94,7 @@ fun MainScreen() {
         }
         Text("Contacts", modifier = Modifier.offset(x = -100.dp))
         ScrollableTextList(contactList)
+        Text("Student Name: Cole Anam\nStudent ID: 301009188", modifier = Modifier.padding(top = 60.dp))
     }
 }
 
