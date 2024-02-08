@@ -93,6 +93,7 @@ fun MainScreen() {
                     dataStore.getAllContacts()
                         .flowOn(Dispatchers.IO)
                         .collect {dataList ->
+                            contactList = listOf("")
                             dataList.forEach { data ->
                                 val dataName = data.name
                                 val dataNum = data.num
